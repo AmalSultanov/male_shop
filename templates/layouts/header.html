@@ -1,0 +1,115 @@
+{% load static %}
+{% load i18n %}
+{% load my_tags %}
+
+<div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+    <div class="offcanvas__option">
+        <div class="offcanvas__links">
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'profile:home' %}">{% trans 'Profile' %}</a>
+                <a href="{% url 'orders:history' %}">{% trans 'History' %}</a>
+            {% else %}
+                <a href="{% url 'auth_login' %}">{% trans 'Sign in' %}</a>
+            {% endif %}
+        </div>
+        <div class="offcanvas__top__hover">
+            {% get_current_language as lang %}
+            {% get_available_languages as langs %}
+            <span>{{ lang }} <i class="arrow_carrot-down"></i></span>
+            <ul>
+                {% for l in langs %}
+                    {% if l.0 != lang %}
+                        <li><a class="text-white" href="{% get_lang_url request l.0 %}">{{ l.0|upper }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="offcanvas__nav__option">
+        <a href="{% url 'pages:wishlist' %}"><img src="{% static 'img/icon/heart.png' %}" alt=""></a>
+        <a href="{% url 'items:cart' %}"><img src="{% static 'img/icon/cart.png' %}" alt=""></a>
+        <div class="price">${% cart_sum request %}</div>
+    </div>
+    <div id="mobile-menu-wrap"></div>
+    <div class="offcanvas__text">
+        <p>{% blocktrans %}Free delivery within 30-day term.{% endblocktrans %}</p>
+    </div>
+</div>
+
+<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-7">
+                    <div class="header__top__left">
+                        <p class="mt-1">{% blocktrans %}Free delivery within 30-day term.{% endblocktrans %}</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-5">
+                    <div class="header__top__right">
+                        <div class="header__top__links">
+                            {% if request.user.is_authenticated %}
+                                <a href="{% url 'profile:home' %}">{% trans 'Profile' %}</a>
+                                <a href="{% url 'orders:history' %}">{% trans 'History' %}</a>
+                            {% else %}
+                                <a href="{% url 'auth_login' %}"
+                                   style="color: #ffffff; display: inline-block; letter-spacing: 2px; text-transform: uppercase; font-size: 13px;">{% trans 'Sign in' %}</a>
+                            {% endif %}
+                        </div>
+                        <div class="header__top__hover">
+                            {% get_current_language as lang %}
+                            {% get_available_languages as langs %}
+                            <span>{{ lang }} <i class="arrow_carrot-down"></i></span>
+                            <ul>
+                                {% for l in langs %}
+                                    {% if l.0 != lang %}
+                                        <li><a class="text-dark"
+                                               href="{% get_lang_url request l.0 %}">{{ l.0|upper }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <div class="header__logo">
+                    <a href="{% url 'pages:home' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-7">
+                <nav class="header__menu mobile-menu">
+                    <ul>
+                        <li {% if request.path == '/en/' or request.path == '/ru/' %}class="active"{% endif %}>
+                            <a href="{% url 'pages:home' %}">{% trans 'Home' %}</a>
+                        </li>
+                        <li {% if request.path == '/en/items/' or request.path == '/ru/items/' %}class="active"{% endif %}>
+                            <a href="{% url 'items:list' %}">{% trans 'Items' %}</a>
+                        </li>
+                        <li {% if request.path == '/en/blog/' or request.path == '/ru/blog/' %}class="active"{% endif %}>
+                            <a href="{% url 'posts:list' %}">{% trans 'Blog' %}</a>
+                        </li>
+                        <li {% if request.path == '/en/about/' or request.path == '/ru/about/' %}class="active"{% endif %}>
+                            <a href="{% url 'pages:about' %}">{% trans 'About Us' %}</a>
+                        </li>
+                        <li {% if request.path == '/en/contact/' or request.path == '/ru/contact/' %}class="active"{% endif %}>
+                            <a href="{% url 'pages:contact' %}">{% trans 'Contacts' %}</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="col-lg-2 col-md-2">
+                <div class="header__nav__option">
+                    <a href="{% url 'pages:wishlist' %}"><img src="{% static 'img/icon/heart.png' %}" alt=""></a>
+                    <a href="{% url 'items:cart' %}"><img src="{% static 'img/icon/cart.png' %}" alt=""></a>
+                </div>
+            </div>
+        </div>
+        <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+</header>

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+    Male Fashion | {% trans 'Blog' %}
+{% endblock %}
+
+{% block extra_css %}
+    <style>
+        .br_row {
+            margin-bottom: 100px;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <section class="breadcrumb-option br_row">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>{% trans 'Blog' %}</h4>
+                        <div class="breadcrumb__links">
+                            <a href="{% url 'pages:home' %}">{% trans 'Home' %}</a>
+                            <span>{% trans 'Blog' %}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% for image in images %}
+        <section class="breadcrumb-blog set-bg" data-setbg="{{ image.image.url }}">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h2>
+                            {% if request.GET.tag %}#{{ request.GET.tag }}
+                            {% else %}{{ image.title }}
+                            {% endif %}
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endfor %}
+
+    <section class="blog spad" id="here">
+        <div class="container">
+            <div class="row">
+                {% for post in object_list %}
+                    <div class="col-lg-4 col-md-6 col-sm-6">
+                        <div class="blog__item">
+                            <div class="blog__item__pic set-bg" data-setbg="{{ post.image.url }}"></div>
+                            <div class="blog__item__text">
+                                <span><img src="{% static 'img/icon/calendar.png' %}"
+                                           alt=""> {{ post.created_at|date:'d F Y' }}</span>
+                                <h5>{{ post.title }}</h5>
+                                <a href="{% url 'posts:detail' pk=post.pk %}">{% trans 'Read More' %}</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="product__pagination">
+                        {% for page in page_obj.paginator.page_range %}
+                            <a {% if page == page_obj.number %}class="active"{% endif %}
+                               href="?page={{ page }}#here">{{ page }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock content %}

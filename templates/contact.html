@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+    Male Fashion | {% trans 'Contacts' %}
+{% endblock %}
+
+{% block content %}
+    <div class="map">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23980.910821561512!2d69.22837768051758!3d41.29550781597255!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x38ae8a348f319a83%3A0x48e7d3b9787383eb!2z0KLQoNCmINCf0LDRgNGD0YE!5e0!3m2!1sru!2s!4v1656172707019!5m2!1sru!2s"
+                height="500" style="border:0;" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+    {#    <div class="row">#}
+    {#        <div class="col-12">#}
+    {#            <!-- Button trigger modal -->#}
+    {#            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">#}
+    {#                Launch demo modal#}
+    {#            </button>#}
+    {##}
+    {#            <!-- Modal -->#}
+    {#            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"#}
+    {#                 aria-labelledby="exampleModalCenterTitle" aria-hidden="true">#}
+    {#                <div class="modal-dialog modal-dialog-centered" role="document">#}
+    {#                    <div class="modal-content">#}
+    {#                        <div class="modal-header">#}
+    {#                            <h5 class="modal-title text-center" id="exampleModalCenterTitle">Modal title</h5>#}
+    {#                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+    {#                                <span aria-hidden="true">&times;</span>#}
+    {#                            </button>#}
+    {#                        </div>#}
+    {#                        <div class="modal-body">#}
+    {#                            <p class="text-center">Added successfully!</p>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#    </div>#}
+
+    <section class="contact spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    {% if messages %}
+                        {% for i in messages %}
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ i }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <div class="contact__text">
+                        <div class="section-title">
+                            <span>{% trans 'Information' %}</span>
+                            <h2>{% trans 'Contact Us' %}</h2>
+                            <p>{% blocktrans %}As you might expect of a company that began as a high-end interiors
+                                contractor, we paystrict attention.{% endblocktrans %}</p>
+                        </div>
+                        <ul>
+                            <li>
+                                <h4>{% trans 'America' %}</h4>
+                                <p>{% blocktrans %}195 E Parker Square Dr, Parker, CO 801{% endblocktrans %} <br/>+43
+                                    982-314-0958</p>
+                            </li>
+                            <li>
+                                <h4>{% trans 'France' %}</h4>
+                                <p>{% blocktrans %}109 Avenue Léon, 63 Clermont-Ferrand{% endblocktrans %} <br/>+12
+                                    345-423-9893</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="contact__form">
+                        <form method="POST" class='my-ajax-form' id="post-form"
+                              data-url='{{ request.build_absolute_uri|safe }}'>
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <input name="name" id="name" type="text" placeholder="{% trans 'Name' %}">
+                                </div>
+                                <div class="col-lg-6">
+                                    <input name="email" id="email" type="text" placeholder="{% trans 'Email' %}">
+                                </div>
+                                <div class="col-lg-12">
+                                    <textarea name="message" id="message"
+                                              placeholder="{% trans 'Message' %}"></textarea>
+                                    <button type="submit" class="site-btn">{% trans 'Send' %}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        $(document).ready(function () {
+            var $myForm = $('.my-ajax-form')
+            $myForm.submit(function (event) {
+                event.preventDefault()
+                var $formData = $(this).serialize()
+                var $thisURL = '{% url 'pages:contact' %}'
+                $.ajax({
+                    method: "POST",
+                    url: $thisURL,
+                    data: $formData,
+                    success: handleFormSuccess,
+                    error: handleFormError,
+                })
+            })
+
+            function handleFormSuccess(data, textStatus, jqXHR) {
+                alert("Your details were successfully sent!")
+                console.log(data)
+                console.log(textStatus)
+                console.log(jqXHR)
+                $myForm[0].reset(); // reset form data
+            }
+
+            function handleFormError(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR)
+                console.log(textStatus)
+                console.log(errorThrown)
+            }
+        })
+    </script>
+    <script>
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        var csrftoken = getCookie('csrftoken');
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                }
+            }
+        });
+    </script>
+{% endblock %}

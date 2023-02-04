@@ -1,0 +1,296 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load my_tags %}
+{% load i18n %}
+
+{% block title %}
+    Male Fashion | {% trans 'Items' %}
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+    <style>
+        .cf {
+            margin: -30px 0 6px 0;
+            font-size: 15px;
+        }
+
+        #f {
+            color: #111111;
+        }
+
+        .b_c_t {
+            cursor: pointer;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>{% trans 'Shop' %}</h4>
+                        <div class="breadcrumb__links">
+                            <a href="{% url 'pages:home' %}">{% trans 'Home' %}</a>
+                            <span>{% trans 'Shop' %}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="shop spad" id="here">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="shop__sidebar">
+                        <div class="shop__sidebar__search">
+                            <form method="GET">
+                                <input value="{{ request.GET.q }}" name="q" type="text"
+                                       placeholder="{% trans 'Search' %}...">
+                                <button type="submit"><span class="icon_search"></span></button>
+                            </form>
+                        </div>
+                        <div class="cf">
+                            <a id="f" href="{% url 'items:list' %}">{% trans 'Clear Filters' %}</a>
+                        </div>
+                        <div class="shop__sidebar__accordion">
+                            <div class="accordion" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseOne">{% trans 'Brands' %}</a>
+                                    </div>
+                                    <div id="collapseOne" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__categories">
+                                                <ul class="nice-scroll">
+                                                    {% for brand in brands %}
+                                                        <li>
+                                                            <a class="b_c_t"
+                                                               {% if request.GET.brand == brand.pk|stringformat:"i" %}style="color: #111111; font-weight: bold;" {% endif %}
+                                                               onclick="addUrlParameter('brand', '{{ brand.pk }}')">
+                                                                {{ brand.title }}
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse"
+                                           data-target="#collapseTwo">{% trans 'Categories' %}</a>
+                                    </div>
+                                    <div id="collapseTwo" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__categories">
+                                                <ul class="nice-scroll">
+                                                    {% for category in categories %}
+                                                        <li>
+                                                            <a class="b_c_t"
+                                                               {% if request.GET.cat == category.pk|stringformat:"i" %}style="color: #111111; font-weight: bold;"{% endif %}
+                                                               onclick="addUrlParameter('cat', '{{ category.pk }}')">
+                                                                {{ category.title }}
+                                                            </a>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse"
+                                           data-target="#collapseThree">{% trans 'Price Filter' %}</a>
+                                    </div>
+                                    <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__price">
+                                                <input type="text" class="js-range-slider" name="my_range" value=""/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseFour">{% trans 'Sizes' %}</a>
+                                    </div>
+                                    <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__size">
+                                                {% for size in sizes %}
+                                                    <label {% if request.GET.size == size.pk|stringformat:"i" %}style="background: #111111; color: #FFFFFF" {% endif %}>{{ size.title }}
+                                                        <input class=""
+                                                               onclick="addUrlParameter('size', '{{ size.pk }}')"
+                                                               name="size" type="radio" value="{{ size.pk }}">
+                                                    </label>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseFive">{% trans 'Colors' %}</a>
+                                    </div>
+                                    <div id="collapseFive" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__color">
+                                                {% for color in colors %}
+                                                    <label style="background: {{ color.code }}">
+                                                        <input onclick="addUrlParameter('color', '{{ color.pk }}')"
+                                                               type="radio" name="color" value="{{ color.pk }}">
+                                                    </label>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseSix">{% trans 'Tags' %}</a>
+                                    </div>
+                                    <div id="collapseSix" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__tags">
+                                                {% for tag in tags %}
+                                                    <a class="b_c_t"
+                                                       {% if request.GET.tag == tag.pk|stringformat:"i" %}style="background: #111111; color: #FFFFFF" {% endif %}
+                                                       onclick="addUrlParameter('tag', '{{ tag.pk }}')">
+                                                        {{ tag.title }}
+                                                    </a>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="shop__product__option">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="shop__product__option__left">
+                                    <p>Showing {{ page_obj.start_index }}-{{ page_obj.end_index }}
+                                        of {{ page_obj.paginator.count }} results</p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="shop__product__option__right">
+                                    <p>{% trans 'Sort by Price' %}:</p>
+                                    <select onchange="addUrlParameter('sort', this.value)">
+                                        <option {% if request.GET.sort == 'price' %}selected{% endif %} value="price">
+                                            {% trans 'Low To High' %}
+                                        </option>
+                                        <option {% if request.GET.sort == '-price' %}selected{% endif %} value="-price">
+                                            {% trans 'High To Low' %}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        {% for item in object_list %}
+                            <div class="col-lg-4 col-md-4 col-sm-6">
+                                <div class="product__item {% if item.is_discount %}sale{% endif %}">
+                                    <div class="product__item__pic set-bg" data-setbg="{{ item.get_image }}">
+                                        {% if item.is_discount %}
+                                            <span class="label">{% trans 'Sale' %}</span>{% endif %}
+                                        {% if item.is_new %}<span class="label">{% trans 'New' %}</span>{% endif %}
+                                        <ul class="product__hover">
+                                            <li>
+                                                <a href="{% url 'pages:add-to-wishlist' pk=item.pk %}?next=
+                                                        {{ request.path }}{{ request.GET.urlencode }}">
+                                                    <img src="{% get_wishlist_icon request item.pk %}" alt="">
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="{% url 'items:detail' pk=item.pk %}">
+                                                    <img src="{% static 'img/icon/search.png' %}" alt="">
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="product__item__text">
+                                        <h6>{{ item.title }}</h6>
+                                        <a href="{% url 'items:add-to-cart' pk=item.pk %}?next={{ request.path }}?{{ request.GET.urlencode }}"
+                                           class="add-cart">
+                                            {% if item|in_cart:request %}
+                                                - {% trans 'Remove From Cart' %}
+                                            {% else %}
+                                                + {% trans 'Add To Cart' %}
+                                            {% endif %}
+                                        </a>
+                                        <h5>${{ item.real_price }} {% if item.is_discount %}<strike class="small"
+                                                                                                    style="color: grey">${{ item.price }}</strike>{% endif %}
+                                        </h5>
+                                        <div class="product__color__select">
+                                            {% for color in item.colors.all|slice:5 %}
+                                                <label style="background: {{ color.code }}">
+                                                    <input type="radio">
+                                                </label>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="product__pagination">
+                                {% for page in page_obj.paginator.page_range %}
+                                    <a {% if page == page_obj.number %}class="active"{% endif %}
+                                       href="?page={{ page }}#here">{{ page }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        function addUrlParameter(name, value) {
+            let searchParams = new URLSearchParams(window.location.search)
+            if (searchParams.has(name) && searchParams.get(name) === value) {
+                searchParams.delete(name)
+            } else {
+                searchParams.set(name, value)
+            }
+            window.location.search = searchParams.toString()
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+    <script>
+        $(".js-range-slider").ionRangeSlider({
+            type: "double",
+            grid: true,
+            min: {{ min_price }},
+            max: {{ max_price }},
+            from: {% get_price_from request %},
+            to: {% get_price_to request %},
+            prefix: "$",
+            onFinish: function (data) {
+                let from = data.from;
+                let to = data.to;
+                let result = from.toString() + ';' + to.toString()
+                addUrlParameter('price', result)
+            }
+        });
+    </script>
+{% endblock %}
