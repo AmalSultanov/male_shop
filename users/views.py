@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import UpdateView
+
 from users.forms import ProfileModelForm
 from users.models import ProfileModel
 
@@ -13,5 +14,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return reverse('profile:home')
 
     def get_object(self, queryset=None):
-        profile, created = ProfileModel.objects.get_or_create(user=self.request.user)
+        profile, created = ProfileModel.objects.get_or_create(
+            user=self.request.user)
+
         return profile

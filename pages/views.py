@@ -19,8 +19,10 @@ class HomeTemplateView(TemplateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['banners'] = BannerModel.objects.all()
-        context['items'] = ItemModel.objects.filter(discount__gt=0).order_by('-pk')[:8]
+        context['items'] = ItemModel.objects.filter(
+            discount__gt=0).order_by('-pk')[:8]
         context['posts'] = PostModel.objects.order_by('-pk')[:3]
+
         return context
 
 
@@ -30,6 +32,7 @@ class AboutTemplateView(TemplateView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['images'] = ImageModel.objects.all()
+
         return context
 
 
@@ -46,6 +49,7 @@ class ContactCreateView(CreateView):
 
     def form_invalid(self, form):
         response = super(ContactCreateView, self).form_invalid(form)
+
         if self.is_ajax(self.request):
             return JsonResponse(form.errors, status=400)
         else:

@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.views.generic import ListView, DetailView, CreateView
+
 from posts.forms import CommentModelForm
 from posts.models import PostModel, ImageModel
 
@@ -16,11 +17,13 @@ class PostListView(ListView):
 
         if tag:
             qs = qs.filter(tags__title=tag)
+
         return qs
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         context['images'] = ImageModel.objects.all()
+
         return context
 
 
@@ -38,4 +41,5 @@ class CommentCreateView(CreateView):
     def form_valid(self, form):
         pk = self.kwargs.get('pk')
         form.instance.post = get_object_or_404(PostModel, pk=pk)
+
         return super().form_valid(form)
