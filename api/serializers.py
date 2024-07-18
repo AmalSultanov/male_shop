@@ -1,5 +1,7 @@
 from rest_framework import serializers
-from items.models import ItemModel, CategoryModel, BrandModel, ColorModel, SizeModel, ItemTagModel
+
+from items.models import (ItemModel, CategoryModel, BrandModel, ColorModel,
+                          SizeModel, ItemTagModel)
 
 
 class CategoryModelSerializer(serializers.ModelSerializer):
@@ -41,5 +43,6 @@ class ItemModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ItemModel
-        exclude = ['title_en', 'title_ru', 'short_description_en', 'short_description_ru',
-                   'long_description_en', 'long_description_ru', 'wishlist']
+        exclude = ['title_en', 'title_ru', 'short_description_en',
+                   'short_description_ru', 'long_description_en',
+                   'long_description_ru', 'wishlist']
