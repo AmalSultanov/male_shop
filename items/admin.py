@@ -3,7 +3,8 @@ from django.contrib import admin
 from import_export.admin import ImportMixin
 from modeltranslation.admin import TranslationAdmin
 
-from items.models import CategoryModel, BrandModel, ItemTagModel, ItemModel, ItemImageModel, SizeModel, ColorModel
+from items.models import (CategoryModel, BrandModel, ItemTagModel, ItemModel,
+                          ItemImageModel, SizeModel, ColorModel)
 
 
 class MyTranslationAdmin(TranslationAdmin):
@@ -69,9 +70,11 @@ class ItemImageModelAdmin(admin.TabularInline):
 
 @admin.register(ItemModel)
 class ItemModelAdmin(ImportMixin, MyTranslationAdmin):
-    list_display = ['title', 'quantity', 'category', 'brand', 'price', 'discount', 'created_at']
+    list_display = ['title', 'quantity', 'category', 'brand',
+                    'price', 'discount', 'created_at']
     list_filter = ['category', 'quantity', 'brand', 'tags', 'created_at']
-    search_fields = ['title', 'quantity', 'category__title', 'short_description', 'price']
+    search_fields = ['title', 'quantity', 'category__title',
+                     'short_description', 'price']
     autocomplete_fields = ['category', 'brand', 'tags', 'sizes', 'colors']
     readonly_fields = ['real_price']
 

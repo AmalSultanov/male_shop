@@ -1,5 +1,7 @@
 from django.urls import path
-from pages.views import HomeTemplateView, AboutTemplateView, ContactCreateView, WishlistListView, add_to_wishlist
+
+from pages.views import (HomeTemplateView, AboutTemplateView,
+                         ContactCreateView, WishlistListView, add_to_wishlist)
 
 app_name = 'pages'
 

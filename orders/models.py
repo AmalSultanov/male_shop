@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
 from items.models import ItemModel
 
 UserModel = get_user_model()
@@ -25,7 +26,8 @@ class OrderModel(models.Model):
     city = models.CharField(max_length=50)
     address = models.CharField(max_length=50)
     postcode = models.CharField(max_length=20)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))
+    created_at = models.DateTimeField(auto_now_add=True,
+                                      verbose_name=_('created_at'))
 
     def __str__(self):
         return f'{str(self.user.profile)}'

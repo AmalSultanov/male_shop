@@ -4,9 +4,11 @@ from django.utils.translation import gettext_lazy as _
 
 
 class ImageModel(models.Model):
-    image = models.ImageField(upload_to='blog_image', verbose_name=_('image'))
+    image = models.ImageField(upload_to='blog_image',
+                              verbose_name=_('image'))
     title = models.CharField(max_length=50, verbose_name=_('title'))
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))
+    created_at = models.DateTimeField(auto_now_add=True,
+                                      verbose_name=_('created_at'))
 
     def __str__(self):
         return self.title
@@ -19,7 +21,8 @@ class ImageModel(models.Model):
 class AuthorModel(models.Model):
     name = models.CharField(max_length=50, verbose_name=_('name'))
     image = models.ImageField(upload_to='authors', verbose_name=_('image'))
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))
+    created_at = models.DateTimeField(auto_now_add=True,
+                                      verbose_name=_('created_at'))
 
     def __str__(self):
         return self.name
@@ -31,7 +34,8 @@ class AuthorModel(models.Model):
 
 class PostTagModel(models.Model):
     title = models.CharField(max_length=20, verbose_name=_('title'))
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))
+    created_at = models.DateTimeField(auto_now_add=True,
+                                      verbose_name=_('created_at'))
 
     def __str__(self):
         return self.title
@@ -57,7 +61,8 @@ class PostModel(models.Model):
         related_name='posts',
         verbose_name=_('tags')
     )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))
+    created_at = models.DateTimeField(auto_now_add=True,
+                                      verbose_name=_('created_at'))
 
     def get_prev(self):
         return self.get_previous_by_created_at()
@@ -78,8 +83,10 @@ class PostModel(models.Model):
 
 class CommentModel(models.Model):
     name = models.CharField(max_length=50, verbose_name=_('name'))
-    email = models.EmailField(verbose_name=_('email'), null=True, blank=True)
-    phone = models.CharField(max_length=30, verbose_name=_('phone'), null=True, blank=True)
+    email = models.EmailField(verbose_name=_('email'),
+                              null=True, blank=True)
+    phone = models.CharField(max_length=30, verbose_name=_('phone'),
+                             null=True, blank=True)
     comment = models.TextField(verbose_name=_('comment'))
     post = models.ForeignKey(
         PostModel,
@@ -87,7 +94,8 @@ class CommentModel(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_('post')
     )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))
+    created_at = models.DateTimeField(auto_now_add=True,
+                                      verbose_name=_('created_at'))
 
     def __str__(self):
         return self.name

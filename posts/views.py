@@ -36,7 +36,8 @@ class CommentCreateView(CreateView):
     form_class = CommentModelForm
 
     def get_success_url(self):
-        return reverse('posts:detail', kwargs={'pk': self.kwargs.get('pk')})
+        return reverse('posts:detail',
+                       kwargs={'pk': self.kwargs.get('pk')})
 
     def form_valid(self, form):
         pk = self.kwargs.get('pk')

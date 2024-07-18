@@ -1,7 +1,8 @@
 from django.contrib import admin
 from modeltranslation.admin import TranslationAdmin
 
-from posts.models import ImageModel, AuthorModel, PostTagModel, PostModel, CommentModel
+from posts.models import (ImageModel, AuthorModel, PostTagModel, PostModel,
+                          CommentModel)
 
 
 class MyTranslationAdmin(TranslationAdmin):

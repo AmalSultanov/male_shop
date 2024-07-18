@@ -58,7 +58,8 @@ class ContactCreateView(CreateView):
     def form_valid(self, form):
         if form.is_valid():
             obj = form.save()
-            text = f'A new letter came!\nName: {obj.name}\nEmail: {obj.email}\nMessage: {obj.message}'
+            text = (f'A new letter came!\nName: {obj.name}\n'
+                    f'Email: {obj.email}\nMessage: {obj.message}')
 
             send_mail(
                 'Notification',

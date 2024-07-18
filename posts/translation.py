@@ -1,4 +1,5 @@
 from modeltranslation.translator import register, TranslationOptions
+
 from posts.models import ImageModel, AuthorModel, PostTagModel, PostModel
 
 

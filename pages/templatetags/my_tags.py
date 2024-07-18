@@ -63,14 +63,5 @@ def cart_sum(request):
     cart = request.session.get('cart')
     if not cart:
         return 0
-    return ItemModel.get_from_cart(request).aggregate(Sum('real_price')).get('real_price__sum', 0)
-
-
-@register.simple_tag
-def increment_quantity(request):
-    pass
-
-
-@register.simple_tag
-def decrement_quantity(request):
-    pass
+    return ItemModel.get_from_cart(request).aggregate(
+        Sum('real_price')).get('real_price__sum', 0)

@@ -5,8 +5,8 @@ from django.db.models import Q, Max, Min
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView
 
-from items.models import ItemModel, CategoryModel, BrandModel, ItemTagModel, \
-    SizeModel, ColorModel
+from items.models import (ItemModel, CategoryModel, BrandModel, ItemTagModel,
+                          SizeModel, ColorModel)
 
 
 class ItemListView(ListView):
@@ -67,8 +67,8 @@ class ItemListView(ListView):
         context['sizes'] = SizeModel.objects.all()
         context['colors'] = ColorModel.objects.all()
 
-        max_price, min_price = ItemModel.objects.aggregate(Max('real_price'),
-                                                           Min('real_price')).values()
+        max_price, min_price = ItemModel.objects.aggregate(
+            Max('real_price'), Min('real_price')).values()
         context['min_price'] = ceil(min_price)
         context['max_price'] = ceil(max_price)
 

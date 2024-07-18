@@ -105,7 +105,8 @@ class ItemModel(models.Model):
     price = models.FloatField(verbose_name=_('price'))
     discount = models.PositiveIntegerField(default=0,
                                            verbose_name=_('discount'))
-    real_price = models.FloatField(verbose_name=_('real_price'), default=0)
+    real_price = models.FloatField(verbose_name=_('real_price'),
+                                   default=0)
     short_description = models.TextField(verbose_name=_('short_description'))
     long_description = RichTextUploadingField(
         verbose_name=_('long_description'))
